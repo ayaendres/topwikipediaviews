@@ -24,7 +24,7 @@ const buttonCss = cssWithMq({
 const pageButtonCss = css(
   cssWithMq({
     border: `1px solid ${Neutral[400]}`,
-    margin: "0em .5em",
+    margin: ["0em .25em", "0em .5em"],
   }),
   buttonCss,
 );
