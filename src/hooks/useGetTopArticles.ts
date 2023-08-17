@@ -1,16 +1,49 @@
-import {useQuery} from "react-query";
-import axios from "axios";
+import { useMutation } from "react-query";
+import axios, { AxiosResponse } from "axios";
+import { padDate } from "../components/helpers/padDate";
 
-const pageViewsURL = 'https://wikimedia.org/api/rest_v1/metrics/pageviews/top/en.wikipedia/all-access';
+const pageViewsURL =
+  "https://wikimedia.org/api/rest_v1/metrics/pageviews/top/en.wikipedia/all-access";
 
-const padDate = (date: number) => date.toString().padStart(2, '0');
-const getTopArticles = async (day: number, month: number, year: number) => {
-    try {
-        return await axios.get(`${pageViewsURL}/${year}/${padDate(month)}/${padDate(day)}`)
-    } catch (error) {
-
-    }
+export interface Article {
+  article: string;
+  views: number;
+  rank: number;
 }
-export const useGetTopArticles = (day: number, month: number, year: number) => {
-    return useQuery([day, month, year], () => getTopArticles(day, month, year));
+
+interface QueryData {
+  project: string;
+  access: string;
+  year: string;
+  month: string;
+  day: string;
+  articles: Array<Article>;
+}
+interface ViewsResponse {
+  items: Array<QueryData>;
+}
+
+/**
+ * getTopArticles calls the wikimedia API for an array of the top articles for a given day
+ * @param date
+ * Date gets parsed into day month and year which are used in the API url.
+ *
+ * The API response arrives with metadata, and a list of articles (see Article type).
+ * Data from articles is used to populate the results.
+ */
+const getTopArticles = async (date: Date) => {
+  const day = date.getDate();
+  const month = (date.getMonth() + 1) % 12; // JS Date is 0-indexed
+  const year = date.getFullYear();
+  try {
+    const response: AxiosResponse<ViewsResponse> = await axios.get(
+      `${pageViewsURL}/${year}/${padDate(month)}/${padDate(day)}`,
+    );
+    return response.data.items;
+  } catch (error) {
+    return [];
+  }
+};
+export const useGetTopArticles = (date: Date) => {
+  return useMutation([date.toDateString()], () => getTopArticles(date));
 };
