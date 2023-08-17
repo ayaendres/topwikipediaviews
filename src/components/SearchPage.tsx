@@ -56,7 +56,7 @@ export const SearchPage = () => {
   const [page, setPage] = useState(0);
   const [date, setDate] = useState(new Date(yesterday));
   const [pinnedDate, setPinnedDate] = useState(new Date(yesterday)); // used to update date on search for pinned articles to delay re-fetches
-  const { mutate, data: results } = useGetTopArticles(date);
+  const { mutate, data: results, error } = useGetTopArticles(date);
 
   useEffect(() => mutate(), [mutate]);
 
@@ -99,18 +99,20 @@ export const SearchPage = () => {
         </div>
       )}
       <div css={cardCss}>
-        {displayData.map((row, index) => (
-          <ArticleRow
-            key={row.rank}
-            article={row.article}
-            views={row.views}
-            rank={pageRankOffset + index + 1}
-            pinnedArticles={pinnedArticles}
-            setPinnedArticles={setPinnedArticles}
-          />
-        ))}
+        {!error
+          ? displayData.map((row, index) => (
+              <ArticleRow
+                key={row.rank}
+                article={row.article}
+                views={row.views}
+                rank={pageRankOffset + index + 1}
+                pinnedArticles={pinnedArticles}
+                setPinnedArticles={setPinnedArticles}
+              />
+            ))
+          : "We were unable to retrieve data for the given date."}
       </div>
-      <Pagination page={page} setPage={setPage} count={count} />
+      {!error && <Pagination page={page} setPage={setPage} count={count} />}
     </div>
   );
 };

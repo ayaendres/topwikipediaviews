@@ -68,16 +68,16 @@ const CustomCaption = (props: CaptionProps) => {
     <div css={captionCss}>
       <button
         css={navButtonCss}
-        disabled={!previousMonth}
         onClick={() => previousMonth && goToMonth(previousMonth)}
+        data-testid="monthLeft"
       >
         <ChevronLeft css={chevronCss} />
       </button>
       {month} {displayMonth.getFullYear()}
       <button
         css={navButtonCss}
-        disabled={!nextMonth}
         onClick={() => nextMonth && goToMonth(nextMonth)}
+        data-testid="monthRight"
       >
         <ChevronRight css={chevronCss} />
       </button>
@@ -95,9 +95,11 @@ const weekdayCss = css({
 const WEEKDAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 const CustomHead = () => {
   return (
-    <tr>
+    <tr key="weekdays">
       {WEEKDAYS.map((day) => (
-        <td css={weekdayCss}>{day}</td>
+        <td css={weekdayCss} key={day}>
+          {day}
+        </td>
       ))}
     </tr>
   );

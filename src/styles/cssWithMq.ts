@@ -33,7 +33,5 @@ export const cssWithMq = (template: CSSObject): SerializedStyles => {
       finalCss = { ...finalCss, [key]: mqValues };
     }
   });
-  console.log(mq1);
-
   return css({ ...finalCss, [mq[0]]: mq0, [mq[1]]: mq1 });
 };

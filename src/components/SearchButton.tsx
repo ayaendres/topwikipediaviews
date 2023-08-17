@@ -13,7 +13,7 @@ const searchButtonCss = cssWithMq({
   alignItems: "center",
   alignSelf: "stretch",
   gap: ".5rem",
-  border: "0px",
+  border: `1px solid ${Green[500]}`,
   width: ["100%", "10rem"],
   borderRadius: "6.25rem",
   backgroundColor: Green[500],

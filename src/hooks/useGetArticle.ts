@@ -20,11 +20,11 @@ interface ViewsResponse {
  *
  * returns QueryData:
  *  - in the case of the API finding data, we return views.
- *  - if the API fails to find data, we return no views, which is handled by the consuming components (displaying an error).
+ *  - if the API fails to find data, we throw the error, which can be handled by the components (showing an error)
  */
 const getArticle = async (date: Date, article: string) => {
   const day = date.getDate();
-  const month = (date.getMonth() + 1) % 12; // JS Date is 0-indexed
+  const month = date.getMonth() + 1; // JS Date is 0-indexed
   const year = date.getFullYear();
   const formattedDate = `${year}${padDate(month)}${padDate(day)}`;
   try {
@@ -33,11 +33,7 @@ const getArticle = async (date: Date, article: string) => {
     );
     return response.data.items;
   } catch (error) {
-    return [
-      {
-        article,
-      },
-    ];
+    throw error;
   }
 };
 export const useGetArticle = (article: string) => {

@@ -108,6 +108,7 @@ const ArrowButton = (props: {
       css={disabled ? disabledArrowCss : arrowButtonCss}
       onClick={onClick}
       disabled={disabled}
+      data-testid={direction}
     >
       {direction === Direction.left && <ChevronLeft css={appliedChevronCss} />}
       {direction === Direction.right && (

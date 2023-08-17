@@ -15,5 +15,5 @@ const bannerCss = cssWithMq({
   zIndex: 3,
 });
 export const Banner = () => {
-  return <div css={bannerCss} />;
+  return <div css={bannerCss} data-testid="banner" />;
 };

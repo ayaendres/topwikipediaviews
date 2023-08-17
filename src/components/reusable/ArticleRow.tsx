@@ -72,7 +72,7 @@ export const ArticleRow = (props: ArticleRowProps) => {
       <section css={viewCss}>
         {views?.toLocaleString() ?? "Views data not found"} {views && "views"}
       </section>
-      <button css={pinCss} onClick={onClick}>
+      <button css={pinCss} onClick={onClick} data-testid="pin">
         {isArticlePinned ? <PinFilled /> : <PinOutlined />}
       </button>
     </div>

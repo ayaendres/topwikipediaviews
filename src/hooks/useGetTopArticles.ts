@@ -11,7 +11,7 @@ export interface Article {
   rank: number;
 }
 
-interface QueryData {
+export interface QueryData {
   project: string;
   access: string;
   year: string;
@@ -30,10 +30,13 @@ interface ViewsResponse {
  *
  * The API response arrives with metadata, and a list of articles (see Article type).
  * Data from articles is used to populate the results.
+ *
+ * If an error occurs in the API, the error will be thrown.
+ * This is handled by the component consuming the hook.
  */
 const getTopArticles = async (date: Date) => {
   const day = date.getDate();
-  const month = (date.getMonth() + 1) % 12; // JS Date is 0-indexed
+  const month = date.getMonth() + 1; // JS Date is 0-indexed
   const year = date.getFullYear();
   try {
     const response: AxiosResponse<ViewsResponse> = await axios.get(
@@ -41,7 +44,7 @@ const getTopArticles = async (date: Date) => {
     );
     return response.data.items;
   } catch (error) {
-    return [];
+    throw error;
   }
 };
 export const useGetTopArticles = (date: Date) => {

@@ -2,8 +2,11 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import App from "./App";
 
-test("renders learn react link", () => {
+jest.mock("./components/SearchPage", () => ({
+  SearchPage: () => <div>Top Wikipedia Views</div>,
+}));
+test("renders Search Page", () => {
   render(<App />);
-  const linkElement = screen.getByText(/Top Wikipedia Articles/i);
-  expect(linkElement).toBeInTheDocument();
+  const title = screen.getByText(/Top Wikipedia Views/i);
+  expect(title).toBeInTheDocument();
 });
